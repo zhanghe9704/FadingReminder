@@ -9,6 +9,10 @@ using FadingReminder.Services;
 using TextBox = System.Windows.Controls.TextBox;
 using CheckBox = System.Windows.Controls.CheckBox;
 using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
+using Color = System.Windows.Media.Color;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace FadingReminder.Views;
 

@@ -6,6 +6,9 @@ using System.Windows.Media;
 using FadingReminder.Helpers;
 using FadingReminder.Models;
 using FadingReminder.Services;
+using MessageBox = System.Windows.MessageBox;
+using Color = System.Windows.Media.Color;
+using Button = System.Windows.Controls.Button;
 
 namespace FadingReminder.Views;
 

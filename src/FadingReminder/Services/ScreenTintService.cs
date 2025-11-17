@@ -4,6 +4,7 @@ using FadingReminder.Helpers;
 using FadingReminder.Models;
 using FadingReminder.Views;
 using Color = System.Windows.Media.Color;
+using Application = System.Windows.Application;
 
 namespace FadingReminder.Services;
 
