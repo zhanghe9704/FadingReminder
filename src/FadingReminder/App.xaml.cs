@@ -14,6 +14,7 @@ public partial class App : Application
     private AutoStartManager? _autoStartManager;
     private ScreenTintService? _screenTintService;
     private IntervalTimerService? _intervalTimerService;
+    private ReminderService? _reminderService;
     private bool _startMinimized = false;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -81,7 +82,9 @@ public partial class App : Application
             _intervalTimerService.Start();
         }
 
-        // TODO: Initialize ReminderService - will be added in Phase 3
+        // Initialize reminder service
+        _reminderService = new ReminderService(_settingsManager, _screenTintService);
+        _reminderService.Start();
     }
 
     private void OnSettingsClicked(object? sender, EventArgs e)
@@ -100,10 +103,12 @@ public partial class App : Application
 
     private void OnRemindersClicked(object? sender, EventArgs e)
     {
-        // TODO: Open reminders window
-        // Will be implemented in Phase 3
-        MessageBox.Show("Reminders window will be implemented in Phase 3", "FadingReminder",
-            MessageBoxButton.OK, MessageBoxImage.Information);
+        // Open reminders window
+        if (_settingsManager != null)
+        {
+            var remindersWindow = new RemindersWindow(_settingsManager, _reminderService);
+            remindersWindow.ShowDialog();
+        }
     }
 
     private void OnToggleTintingClicked(object? sender, EventArgs e)
@@ -146,6 +151,9 @@ public partial class App : Application
 
     private void Cleanup()
     {
+        // Stop and dispose reminder service
+        _reminderService?.Dispose();
+
         // Stop and dispose interval timer
         _intervalTimerService?.Dispose();
 
@@ -154,8 +162,6 @@ public partial class App : Application
 
         // Dispose tray manager
         _trayManager?.Dispose();
-
-        // TODO: Dispose ReminderService when added in Phase 3
     }
 
     protected override void OnExit(ExitEventArgs e)

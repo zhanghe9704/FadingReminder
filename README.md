@@ -24,10 +24,21 @@ A portable Windows 11 desktop application for periodic screen tinting and time-b
 - ✅ Enable/disable tinting toggle
 - ✅ Click-to-dismiss overlays
 
+#### Phase 3 - Reminder System ✅
+- ✅ 10 reminder slots for today
+- ✅ 10 reminder slots for tomorrow
+- ✅ Time-based scheduling (HH:MM format)
+- ✅ Custom reminder messages (up to 200 chars)
+- ✅ Screen tint with message when reminder triggers
+- ✅ Enable/disable individual reminders
+- ✅ Test reminder functionality
+- ✅ Automatic date rollover at midnight
+- ✅ Input validation and auto-formatting
+- ✅ Persistent storage
+
 ### Coming Soon
-- ⏳ **Phase 3**: Reminder system (10 slots for today, 10 for tomorrow)
-- ⏳ **Phase 4**: Polish and multi-monitor enhancements
-- ⏳ **Phase 5**: Final testing and optimization
+- ⏳ **Phase 4**: Polish, enhancements, and optimization
+- ⏳ **Phase 5**: Final testing and documentation
 
 ## System Requirements
 
@@ -170,17 +181,20 @@ FadingReminder/
 - [x] Multi-monitor support
 - [x] Test tint functionality
 
-### Phase 3: Reminder System ⏳
-- [ ] Reminder scheduling service
-- [ ] Reminders management UI
-- [ ] Reminder notifications
-- [ ] Date rollover logic
+### Phase 3: Reminder System ✅ (COMPLETED)
+- [x] Reminder scheduling service
+- [x] Reminders management UI
+- [x] Reminder notifications with tint overlay
+- [x] Date rollover logic
+- [x] Test reminder functionality
+- [x] Input validation and auto-formatting
 
-### Phase 4: Polish & Testing ⏳
+### Phase 4: Polish & Testing ⏳ (Optional Enhancements)
 - [ ] UI/UX improvements
-- [ ] Multi-monitor support
+- [ ] Additional multi-monitor features
 - [ ] Performance optimization
 - [ ] Comprehensive testing
+- [ ] User documentation
 
 ## Troubleshooting
 
@@ -220,5 +234,5 @@ See `docs/development-plan.md` for detailed development timeline and feature roa
 
 ---
 
-**Current Version**: 1.0.0-beta (Phase 2)
+**Current Version**: 1.0.0-rc (Phase 3 - Release Candidate)
 **Last Updated**: 2025-11-17
