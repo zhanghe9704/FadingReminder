@@ -2,6 +2,16 @@
 
 A portable Windows 11 desktop application for periodic screen tinting and time-based reminders with visual notifications.
 
+**📖 For detailed usage instructions, see [USER-GUIDE.md](USER-GUIDE.md)**
+
+## Quick Start
+
+1. **Compile**: Run `build-portable.bat` (requires [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0))
+2. **Run**: Execute `FadingReminder.exe` from the `publish` folder
+3. **Use**: Right-click the system tray icon to access Settings and Reminders
+
+**Status**: ✅ Feature Complete (v1.0.0-rc)
+
 ## Features
 
 ### Current Features
@@ -84,9 +94,9 @@ dotnet publish --configuration Release --runtime win-x64 --self-contained true
 - `/silent` - Start minimized without showing balloon tip
 
 ### System Tray Menu
-- **Settings** - Configure tint color and interval (coming in Phase 2)
-- **Reminders** - Manage your reminders (coming in Phase 3)
-- **Disable/Enable Tinting** - Toggle periodic tinting on/off
+- **Settings** - Configure tint color, interval, opacity, and application options
+- **Reminders** - Manage your time-based reminders (10 for today, 10 for tomorrow)
+- **Enable/Disable Tinting** - Toggle periodic tinting on/off
 - **Exit** - Close the application
 
 ## Configuration
