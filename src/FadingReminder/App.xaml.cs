@@ -18,6 +18,10 @@ public partial class App : Application
     private ReminderService? _reminderService;
     private bool _startMinimized = false;
 
+    // Track single instances of windows
+    private SettingsWindow? _settingsWindow;
+    private RemindersWindow? _remindersWindow;
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -90,25 +94,57 @@ public partial class App : Application
 
     private void OnSettingsClicked(object? sender, EventArgs e)
     {
-        // Open settings window
+        // Open settings window (only one instance allowed)
         if (_settingsManager != null && _autoStartManager != null)
         {
-            var settingsWindow = new SettingsWindow(
+            // If window already exists and is open, bring it to focus
+            if (_settingsWindow != null)
+            {
+                if (_settingsWindow.IsLoaded)
+                {
+                    _settingsWindow.Activate();
+                    _settingsWindow.Focus();
+                    return;
+                }
+            }
+
+            // Create new window instance
+            _settingsWindow = new SettingsWindow(
                 _settingsManager,
                 _autoStartManager,
                 _screenTintService,
                 _intervalTimerService);
-            settingsWindow.ShowDialog();
+
+            // Clear reference when window closes
+            _settingsWindow.Closed += (s, args) => _settingsWindow = null;
+
+            _settingsWindow.ShowDialog();
         }
     }
 
     private void OnRemindersClicked(object? sender, EventArgs e)
     {
-        // Open reminders window
+        // Open reminders window (only one instance allowed)
         if (_settingsManager != null)
         {
-            var remindersWindow = new RemindersWindow(_settingsManager, _reminderService);
-            remindersWindow.ShowDialog();
+            // If window already exists and is open, bring it to focus
+            if (_remindersWindow != null)
+            {
+                if (_remindersWindow.IsLoaded)
+                {
+                    _remindersWindow.Activate();
+                    _remindersWindow.Focus();
+                    return;
+                }
+            }
+
+            // Create new window instance
+            _remindersWindow = new RemindersWindow(_settingsManager, _reminderService);
+
+            // Clear reference when window closes
+            _remindersWindow.Closed += (s, args) => _remindersWindow = null;
+
+            _remindersWindow.ShowDialog();
         }
     }
 
