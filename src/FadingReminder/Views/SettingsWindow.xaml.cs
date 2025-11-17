@@ -129,6 +129,10 @@ public partial class SettingsWindow : Window
 
     private void UpdateColorPreview()
     {
+        // Check if UI elements are initialized (prevents errors during XAML initialization)
+        if (ColorPreview == null)
+            return;
+
         try
         {
             Color color = ColorHelper.FromHex(ColorTextBox.Text.Trim());
