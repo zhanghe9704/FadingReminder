@@ -80,15 +80,18 @@ public class ScreenTintService
 
             foreach (var screen in screens)
             {
-                var overlay = new TintOverlay(tintColor, opacity, durationSeconds, customMessage);
+                // Use explicit positioning constructor for multi-monitor support
+                var overlay = new TintOverlay(
+                    tintColor,
+                    opacity,
+                    durationSeconds,
+                    customMessage,
+                    screen.Bounds.Left,
+                    screen.Bounds.Top,
+                    screen.Bounds.Width,
+                    screen.Bounds.Height);
+
                 overlay.Closed += (s, e) => _activeOverlays.Remove(overlay);
-
-                // Position overlay on this specific screen
-                overlay.Left = screen.Bounds.Left;
-                overlay.Top = screen.Bounds.Top;
-                overlay.Width = screen.Bounds.Width;
-                overlay.Height = screen.Bounds.Height;
-
                 _activeOverlays.Add(overlay);
                 overlay.Show();
             }

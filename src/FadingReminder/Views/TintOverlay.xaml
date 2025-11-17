@@ -4,7 +4,7 @@
         Title="TintOverlay"
         WindowStyle="None"
         ResizeMode="NoResize"
-        WindowState="Maximized"
+        WindowState="Normal"
         Topmost="True"
         AllowsTransparency="True"
         Background="Transparent"

@@ -14,12 +14,14 @@ public partial class TintOverlay : Window
 {
     private DispatcherTimer? _dismissTimer;
     private readonly int _durationSeconds;
+    private readonly bool _useExplicitPositioning;
 
     public TintOverlay(Color tintColor, double opacity, int durationSeconds, string customMessage)
     {
         InitializeComponent();
 
         _durationSeconds = durationSeconds;
+        _useExplicitPositioning = false; // Auto-position to primary screen
 
         // Set the tint color and opacity
         TintRectangle.Fill = new SolidColorBrush(tintColor);
@@ -34,10 +36,27 @@ public partial class TintOverlay : Window
             : customMessage;
     }
 
+    /// <summary>
+    /// Constructor for explicitly positioned overlay (used for multi-monitor)
+    /// </summary>
+    public TintOverlay(Color tintColor, double opacity, int durationSeconds, string customMessage,
+                       int left, int top, int width, int height)
+        : this(tintColor, opacity, durationSeconds, customMessage)
+    {
+        _useExplicitPositioning = true;
+        Left = left;
+        Top = top;
+        Width = width;
+        Height = height;
+    }
+
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        // Position the window to cover the entire screen
-        PositionWindow();
+        // Position the window to cover the entire screen (only if not explicitly positioned)
+        if (!_useExplicitPositioning)
+        {
+            PositionWindow();
+        }
 
         // Start the auto-dismiss timer
         StartDismissTimer();
