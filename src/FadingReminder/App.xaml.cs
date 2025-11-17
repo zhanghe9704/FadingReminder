@@ -1,6 +1,7 @@
 using System.Windows;
 using FadingReminder.Services;
 using FadingReminder.Views;
+using Application = System.Windows.Application;
 
 namespace FadingReminder;
 

@@ -3,6 +3,7 @@ using System.Windows.Media;
 using FadingReminder.Helpers;
 using FadingReminder.Models;
 using FadingReminder.Views;
+using Color = System.Windows.Media.Color;
 
 namespace FadingReminder.Services;
 

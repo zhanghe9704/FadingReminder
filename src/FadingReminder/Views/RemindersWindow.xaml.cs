@@ -6,6 +6,9 @@ using System.Windows.Media;
 using FadingReminder.Helpers;
 using FadingReminder.Models;
 using FadingReminder.Services;
+using TextBox = System.Windows.Controls.TextBox;
+using CheckBox = System.Windows.Controls.CheckBox;
+using Button = System.Windows.Controls.Button;
 
 namespace FadingReminder.Views;
 
