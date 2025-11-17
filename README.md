@@ -4,18 +4,30 @@ A portable Windows 11 desktop application for periodic screen tinting and time-b
 
 ## Features
 
-### Current (Phase 1 - Infrastructure)
+### Current Features
+
+#### Phase 1 - Infrastructure ✅
 - ✅ System tray integration
 - ✅ Settings persistence (JSON-based)
 - ✅ Auto-start functionality
 - ✅ Portable deployment (no installation required)
 - ✅ Basic application architecture
 
+#### Phase 2 - Screen Tinting ✅
+- ✅ Periodic screen tinting every N minutes
+- ✅ Configurable tint color (M) with live preview
+- ✅ Adjustable opacity (20%-80%)
+- ✅ Configurable duration (1-10 seconds)
+- ✅ Multi-monitor support
+- ✅ Quick color selection buttons
+- ✅ Test tint functionality
+- ✅ Enable/disable tinting toggle
+- ✅ Click-to-dismiss overlays
+
 ### Coming Soon
-- ⏳ **Phase 2**: Periodic screen tinting with configurable color and interval
 - ⏳ **Phase 3**: Reminder system (10 slots for today, 10 for tomorrow)
-- ⏳ **Phase 4**: Full auto-start implementation
-- ⏳ **Phase 5**: Polish and final testing
+- ⏳ **Phase 4**: Polish and multi-monitor enhancements
+- ⏳ **Phase 5**: Final testing and optimization
 
 ## System Requirements
 
@@ -150,11 +162,13 @@ FadingReminder/
 - [x] Auto-start manager
 - [x] Build configuration
 
-### Phase 2: Screen Tinting ⏳ (Coming Next)
-- [ ] Screen tint overlay window
-- [ ] Interval timer service
-- [ ] Settings UI for tint configuration
-- [ ] Color picker implementation
+### Phase 2: Screen Tinting ✅ (COMPLETED)
+- [x] Screen tint overlay window
+- [x] Interval timer service
+- [x] Settings UI for tint configuration
+- [x] Color picker implementation
+- [x] Multi-monitor support
+- [x] Test tint functionality
 
 ### Phase 3: Reminder System ⏳
 - [ ] Reminder scheduling service
@@ -206,5 +220,5 @@ See `docs/development-plan.md` for detailed development timeline and feature roa
 
 ---
 
-**Current Version**: 1.0.0-alpha (Phase 1)
+**Current Version**: 1.0.0-beta (Phase 2)
 **Last Updated**: 2025-11-17

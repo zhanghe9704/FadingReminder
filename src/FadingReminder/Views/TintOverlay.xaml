@@ -1,0 +1,64 @@
+<Window x:Class="FadingReminder.Views.TintOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TintOverlay"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        Topmost="True"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Focusable="False"
+        IsHitTestVisible="True"
+        Loaded="Window_Loaded">
+
+    <Grid x:Name="OverlayGrid" MouseDown="OverlayGrid_MouseDown">
+        <!-- The tint rectangle -->
+        <Rectangle x:Name="TintRectangle"
+                   Fill="Navy"
+                   Opacity="0.4"/>
+
+        <!-- Optional message display for reminders -->
+        <Border x:Name="MessageBorder"
+                Background="#E0FFFFFF"
+                CornerRadius="10"
+                Padding="30,20"
+                MaxWidth="600"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="Collapsed">
+            <Border.Effect>
+                <DropShadowEffect Color="Black"
+                                  Direction="270"
+                                  ShadowDepth="5"
+                                  Opacity="0.5"
+                                  BlurRadius="15"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock x:Name="MessageTitle"
+                           Text="Reminder"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,15"/>
+
+                <TextBlock x:Name="MessageText"
+                           Text=""
+                           FontSize="18"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           MaxWidth="540"/>
+
+                <TextBlock x:Name="DismissText"
+                           Text="Click anywhere to dismiss"
+                           FontSize="12"
+                           Foreground="Gray"
+                           HorizontalAlignment="Center"
+                           Margin="0,15,0,0"
+                           FontStyle="Italic"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

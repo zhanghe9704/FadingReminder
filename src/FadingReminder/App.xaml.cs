@@ -1,5 +1,6 @@
 using System.Windows;
 using FadingReminder.Services;
+using FadingReminder.Views;
 
 namespace FadingReminder;
 
@@ -11,6 +12,8 @@ public partial class App : Application
     private SystemTrayManager? _trayManager;
     private SettingsManager? _settingsManager;
     private AutoStartManager? _autoStartManager;
+    private ScreenTintService? _screenTintService;
+    private IntervalTimerService? _intervalTimerService;
     private bool _startMinimized = false;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -66,16 +69,33 @@ public partial class App : Application
                 System.Windows.Forms.ToolTipIcon.Info);
         }
 
-        // TODO: Initialize other services (IntervalTimerService, ReminderService, etc.)
-        // These will be added in Phase 2 and 3
+        // Initialize screen tint service
+        _screenTintService = new ScreenTintService(_settingsManager);
+
+        // Initialize interval timer service
+        _intervalTimerService = new IntervalTimerService(_settingsManager, _screenTintService);
+
+        // Start the interval timer if tinting is enabled
+        if (_settingsManager.Settings.IsTintingEnabled)
+        {
+            _intervalTimerService.Start();
+        }
+
+        // TODO: Initialize ReminderService - will be added in Phase 3
     }
 
     private void OnSettingsClicked(object? sender, EventArgs e)
     {
-        // TODO: Open settings window
-        // Will be implemented in Phase 2
-        MessageBox.Show("Settings window will be implemented in Phase 2", "FadingReminder",
-            MessageBoxButton.OK, MessageBoxImage.Information);
+        // Open settings window
+        if (_settingsManager != null && _autoStartManager != null)
+        {
+            var settingsWindow = new SettingsWindow(
+                _settingsManager,
+                _autoStartManager,
+                _screenTintService,
+                _intervalTimerService);
+            settingsWindow.ShowDialog();
+        }
     }
 
     private void OnRemindersClicked(object? sender, EventArgs e)
@@ -96,6 +116,19 @@ public partial class App : Application
 
             _trayManager?.UpdateTintingState(_settingsManager.Settings.IsTintingEnabled);
 
+            // Start or stop the interval timer
+            if (_intervalTimerService != null)
+            {
+                if (_settingsManager.Settings.IsTintingEnabled)
+                {
+                    _intervalTimerService.Start();
+                }
+                else
+                {
+                    _intervalTimerService.Stop();
+                }
+            }
+
             string status = _settingsManager.Settings.IsTintingEnabled ? "enabled" : "disabled";
             _trayManager?.ShowBalloonTip(
                 "FadingReminder",
@@ -113,10 +146,16 @@ public partial class App : Application
 
     private void Cleanup()
     {
+        // Stop and dispose interval timer
+        _intervalTimerService?.Dispose();
+
+        // Close any active tint overlays
+        _screenTintService?.CloseAllTints();
+
+        // Dispose tray manager
         _trayManager?.Dispose();
 
-        // TODO: Dispose other services when they're added
-        // (IntervalTimerService, ReminderService, etc.)
+        // TODO: Dispose ReminderService when added in Phase 3
     }
 
     protected override void OnExit(ExitEventArgs e)
