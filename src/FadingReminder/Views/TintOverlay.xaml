@@ -19,15 +19,14 @@
                    Fill="Navy"
                    Opacity="0.4"/>
 
-        <!-- Optional message display for reminders -->
+        <!-- Message display with time and custom message -->
         <Border x:Name="MessageBorder"
                 Background="#E0FFFFFF"
                 CornerRadius="10"
                 Padding="30,20"
                 MaxWidth="600"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Visibility="Collapsed">
+                VerticalAlignment="Center">
             <Border.Effect>
                 <DropShadowEffect Color="Black"
                                   Direction="270"
@@ -37,26 +36,27 @@
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock x:Name="MessageTitle"
-                           Text="Reminder"
-                           FontSize="24"
+                <TextBlock x:Name="CurrentTimeText"
+                           Text="12:00 PM"
+                           FontSize="48"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,15"/>
+                           Margin="0,0,0,10"/>
 
                 <TextBlock x:Name="MessageText"
-                           Text=""
-                           FontSize="18"
+                           Text="Time to rest your eyes!"
+                           FontSize="20"
                            TextWrapping="Wrap"
                            TextAlignment="Center"
-                           MaxWidth="540"/>
+                           MaxWidth="540"
+                           Margin="0,0,0,15"/>
 
                 <TextBlock x:Name="DismissText"
                            Text="Click anywhere to dismiss"
                            FontSize="12"
                            Foreground="Gray"
                            HorizontalAlignment="Center"
-                           Margin="0,15,0,0"
+                           Margin="0,5,0,0"
                            FontStyle="Italic"/>
             </StackPanel>
         </Border>

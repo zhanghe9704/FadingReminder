@@ -129,9 +129,8 @@ public class ReminderService : IDisposable
         reminder.HasTriggered = true;
         _settingsManager.SaveReminders();
 
-        // Show the tint with the reminder message
-        string message = $"{reminder.Message}\n\n{DateTime.Now:HH:mm}";
-        _screenTintService.ShowTint(message);
+        // Show the tint with the reminder message (time is shown automatically by overlay)
+        _screenTintService.ShowTint(reminder.Message);
 
         // Raise event
         ReminderTriggered?.Invoke(this, reminder);
@@ -142,7 +141,7 @@ public class ReminderService : IDisposable
     /// </summary>
     public void TestReminder(Reminder reminder)
     {
-        string message = $"TEST: {reminder.Message}\n\n{reminder.Time:hh\\:mm}";
+        string message = $"TEST: {reminder.Message}";
         _screenTintService.ShowTint(message);
     }
 

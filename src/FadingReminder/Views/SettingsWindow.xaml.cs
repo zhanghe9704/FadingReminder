@@ -51,6 +51,7 @@ public partial class SettingsWindow : Window
         EnableTintingCheckBox.IsChecked = settings.IsTintingEnabled;
         AutoStartCheckBox.IsChecked = settings.AutoStartEnabled;
         StartMinimizedCheckBox.IsChecked = settings.StartMinimized;
+        CustomMessageTextBox.Text = settings.CustomMessage;
 
         // Update color preview
         UpdateColorPreview();
@@ -75,6 +76,7 @@ public partial class SettingsWindow : Window
         settings.IsTintingEnabled = EnableTintingCheckBox.IsChecked ?? true;
         settings.AutoStartEnabled = AutoStartCheckBox.IsChecked ?? false;
         settings.StartMinimized = StartMinimizedCheckBox.IsChecked ?? false;
+        settings.CustomMessage = CustomMessageTextBox.Text.Trim();
 
         _settingsManager.SaveSettings();
 
@@ -186,22 +188,25 @@ public partial class SettingsWindow : Window
             TintColor = _settingsManager.Settings.TintColor,
             TintOpacity = _settingsManager.Settings.TintOpacity,
             TintDurationSeconds = _settingsManager.Settings.TintDurationSeconds,
-            ShowOnAllMonitors = _settingsManager.Settings.ShowOnAllMonitors
+            ShowOnAllMonitors = _settingsManager.Settings.ShowOnAllMonitors,
+            CustomMessage = _settingsManager.Settings.CustomMessage
         };
 
         _settingsManager.Settings.TintColor = ColorTextBox.Text.Trim();
         _settingsManager.Settings.TintOpacity = OpacitySlider.Value;
         _settingsManager.Settings.TintDurationSeconds = int.Parse(DurationTextBox.Text);
         _settingsManager.Settings.ShowOnAllMonitors = ShowOnAllMonitorsCheckBox.IsChecked ?? false;
+        _settingsManager.Settings.CustomMessage = CustomMessageTextBox.Text.Trim();
 
         // Show test tint
-        _screenTintService.ShowTint("Test Tint\n\nThis is how your tint will look.");
+        _screenTintService.ShowTint();
 
         // Restore original settings (don't save the test)
         _settingsManager.Settings.TintColor = originalSettings.TintColor;
         _settingsManager.Settings.TintOpacity = originalSettings.TintOpacity;
         _settingsManager.Settings.TintDurationSeconds = originalSettings.TintDurationSeconds;
         _settingsManager.Settings.ShowOnAllMonitors = originalSettings.ShowOnAllMonitors;
+        _settingsManager.Settings.CustomMessage = originalSettings.CustomMessage;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)

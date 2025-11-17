@@ -44,4 +44,9 @@ public class AppSettings
     /// Whether to start the application minimized to tray
     /// </summary>
     public bool StartMinimized { get; set; } = false;
+
+    /// <summary>
+    /// Custom message to display on the tint overlay alongside the current time
+    /// </summary>
+    public string CustomMessage { get; set; } = "Time to rest your eyes!";
 }

@@ -15,7 +15,7 @@ public partial class TintOverlay : Window
     private DispatcherTimer? _dismissTimer;
     private readonly int _durationSeconds;
 
-    public TintOverlay(Color tintColor, double opacity, int durationSeconds, string? message = null)
+    public TintOverlay(Color tintColor, double opacity, int durationSeconds, string customMessage)
     {
         InitializeComponent();
 
@@ -25,18 +25,19 @@ public partial class TintOverlay : Window
         TintRectangle.Fill = new SolidColorBrush(tintColor);
         TintRectangle.Opacity = opacity;
 
-        // If there's a message, show it
-        if (!string.IsNullOrWhiteSpace(message))
-        {
-            MessageText.Text = message;
-            MessageBorder.Visibility = Visibility.Visible;
+        // Set current time
+        CurrentTimeText.Text = DateTime.Now.ToString("h:mm tt");
 
-            // Calculate contrasting color for text
-            var backgroundColor = ColorHelper.FromHex("#E0FFFFFF");
-            var textColor = ColorHelper.GetContrastingColor(backgroundColor);
-            MessageTitle.Foreground = new SolidColorBrush(textColor);
-            MessageText.Foreground = new SolidColorBrush(textColor);
-        }
+        // Set custom message
+        MessageText.Text = string.IsNullOrWhiteSpace(customMessage)
+            ? "Time to rest your eyes!"
+            : customMessage;
+
+        // Calculate contrasting color for text
+        var backgroundColor = ColorHelper.FromHex("#E0FFFFFF");
+        var textColor = ColorHelper.GetContrastingColor(backgroundColor);
+        CurrentTimeText.Foreground = new SolidColorBrush(textColor);
+        MessageText.Foreground = new SolidColorBrush(textColor);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -22,7 +22,7 @@ public class ScreenTintService
     }
 
     /// <summary>
-    /// Shows a tint overlay using current settings
+    /// Shows a tint overlay using current settings and custom message
     /// </summary>
     public void ShowTint()
     {
@@ -30,10 +30,10 @@ public class ScreenTintService
     }
 
     /// <summary>
-    /// Shows a tint overlay with an optional message (for reminders)
+    /// Shows a tint overlay with an optional override message (for reminders)
     /// </summary>
-    /// <param name="message">Optional message to display</param>
-    public void ShowTint(string? message)
+    /// <param name="overrideMessage">Optional message to override the default custom message</param>
+    public void ShowTint(string? overrideMessage)
     {
         // Get current settings
         var settings = _settingsManager.Settings;
@@ -41,25 +41,28 @@ public class ScreenTintService
         // Parse the tint color
         Color tintColor = ColorHelper.FromHex(settings.TintColor);
 
+        // Use override message if provided, otherwise use custom message from settings
+        string displayMessage = overrideMessage ?? settings.CustomMessage;
+
         // Show overlay(s)
         if (settings.ShowOnAllMonitors)
         {
-            ShowTintOnAllMonitors(tintColor, settings.TintOpacity, settings.TintDurationSeconds, message);
+            ShowTintOnAllMonitors(tintColor, settings.TintOpacity, settings.TintDurationSeconds, displayMessage);
         }
         else
         {
-            ShowTintOnPrimaryMonitor(tintColor, settings.TintOpacity, settings.TintDurationSeconds, message);
+            ShowTintOnPrimaryMonitor(tintColor, settings.TintOpacity, settings.TintDurationSeconds, displayMessage);
         }
     }
 
     /// <summary>
     /// Shows tint overlay on the primary monitor only
     /// </summary>
-    private void ShowTintOnPrimaryMonitor(Color tintColor, double opacity, int durationSeconds, string? message)
+    private void ShowTintOnPrimaryMonitor(Color tintColor, double opacity, int durationSeconds, string customMessage)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            var overlay = new TintOverlay(tintColor, opacity, durationSeconds, message);
+            var overlay = new TintOverlay(tintColor, opacity, durationSeconds, customMessage);
             overlay.Closed += (s, e) => _activeOverlays.Remove(overlay);
             _activeOverlays.Add(overlay);
             overlay.Show();
@@ -69,7 +72,7 @@ public class ScreenTintService
     /// <summary>
     /// Shows tint overlay on all monitors
     /// </summary>
-    private void ShowTintOnAllMonitors(Color tintColor, double opacity, int durationSeconds, string? message)
+    private void ShowTintOnAllMonitors(Color tintColor, double opacity, int durationSeconds, string customMessage)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -77,7 +80,7 @@ public class ScreenTintService
 
             foreach (var screen in screens)
             {
-                var overlay = new TintOverlay(tintColor, opacity, durationSeconds, message);
+                var overlay = new TintOverlay(tintColor, opacity, durationSeconds, customMessage);
                 overlay.Closed += (s, e) => _activeOverlays.Remove(overlay);
 
                 // Position overlay on this specific screen

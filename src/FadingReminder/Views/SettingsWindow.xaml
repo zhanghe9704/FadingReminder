@@ -104,6 +104,16 @@
                 <!-- Display Options -->
                 <GroupBox Header="Display Options" Padding="10" Margin="0,0,0,15">
                     <StackPanel>
+                        <Label Content="Custom Message:"/>
+                        <TextBox x:Name="CustomMessageTextBox"
+                                 Text="Time to rest your eyes!"
+                                 MaxLength="100"
+                                 Margin="0,0,0,10"/>
+                        <TextBlock Text="This message will be shown with the current time on the tint overlay"
+                                   FontSize="10"
+                                   Foreground="Gray"
+                                   Margin="5,0,5,10"/>
+
                         <Label Content="Tint Duration (seconds):"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
