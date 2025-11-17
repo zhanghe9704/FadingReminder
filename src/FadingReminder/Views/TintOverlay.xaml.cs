@@ -32,12 +32,6 @@ public partial class TintOverlay : Window
         MessageText.Text = string.IsNullOrWhiteSpace(customMessage)
             ? "Time to rest your eyes!"
             : customMessage;
-
-        // Calculate contrasting color for text
-        var backgroundColor = ColorHelper.FromHex("#E0FFFFFF");
-        var textColor = ColorHelper.GetContrastingColor(backgroundColor);
-        CurrentTimeText.Foreground = new SolidColorBrush(textColor);
-        MessageText.Foreground = new SolidColorBrush(textColor);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
