@@ -76,7 +76,7 @@ public partial class RemindersWindow : Window
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) }); // Enable checkbox
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(80) }); // Time
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Message
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90) }); // Color
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(115) }); // Color (expanded to fit button)
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) }); // Test button
 
         // Enable checkbox
@@ -141,10 +141,64 @@ public partial class RemindersWindow : Window
             BorderBrush = new SolidColorBrush(Color.FromRgb(128, 128, 128)),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(3),
-            Margin = new Thickness(5, 0, 0, 0),
+            Margin = new Thickness(3, 0, 0, 0),
             Background = new SolidColorBrush(Colors.LightGray)
         };
         colorPanel.Children.Add(colorPreview);
+
+        // Color picker button
+        var colorPickerButton = new Button
+        {
+            Content = "▼",
+            Width = 20,
+            Height = 20,
+            Margin = new Thickness(3, 0, 0, 0),
+            Padding = new Thickness(0),
+            FontSize = 8,
+            ToolTip = "Choose from predefined colors",
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center
+        };
+
+        // Create context menu with predefined colors
+        var colorMenu = new System.Windows.Controls.ContextMenu();
+        var predefinedColors = new[]
+        {
+            ("Default (use global)", ""),
+            ("Red", "#80FF0000"),
+            ("Green", "#8000FF00"),
+            ("Blue", "#800000FF"),
+            ("Yellow", "#80FFFF00"),
+            ("Orange", "#80FF8800"),
+            ("Purple", "#80800080"),
+            ("Navy", "#80000080"),
+            ("Tea Green", "#80CCEED0")
+        };
+
+        foreach (var (name, colorValue) in predefinedColors)
+        {
+            var menuItem = new System.Windows.Controls.MenuItem
+            {
+                Header = name,
+                Tag = colorValue
+            };
+            menuItem.Click += (s, e) =>
+            {
+                var item = s as System.Windows.Controls.MenuItem;
+                if (item != null)
+                {
+                    slot.ColorTextBox.Text = item.Tag?.ToString() ?? "";
+                }
+            };
+            colorMenu.Items.Add(menuItem);
+        }
+
+        colorPickerButton.ContextMenu = colorMenu;
+        colorPickerButton.Click += (s, e) =>
+        {
+            colorPickerButton.ContextMenu.IsOpen = true;
+        };
+        colorPanel.Children.Add(colorPickerButton);
 
         Grid.SetColumn(colorPanel, 3);
         grid.Children.Add(colorPanel);
@@ -159,7 +213,10 @@ public partial class RemindersWindow : Window
             Background = new SolidColorBrush(Color.FromRgb(33, 150, 243)),
             Foreground = new SolidColorBrush(Colors.White),
             BorderThickness = new Thickness(0),
-            ToolTip = "Test this reminder"
+            ToolTip = "Test this reminder",
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center,
+            Padding = new Thickness(2)
         };
         testButton.Click += (s, e) => TestReminder(slot);
         Grid.SetColumn(testButton, 4);
@@ -173,6 +230,7 @@ public partial class RemindersWindow : Window
         slot.MessageTextBox = messageTextBox;
         slot.ColorTextBox = colorTextBox;
         slot.ColorPreview = colorPreview;
+        slot.ColorPickerButton = colorPickerButton;
         slot.TestButton = testButton;
         slot.Day = day;
 
@@ -187,12 +245,14 @@ public partial class RemindersWindow : Window
         slot.TimeTextBox.IsEnabled = isEnabled;
         slot.MessageTextBox.IsEnabled = isEnabled;
         slot.ColorTextBox.IsEnabled = isEnabled;
+        slot.ColorPickerButton.IsEnabled = isEnabled;
         slot.TestButton.IsEnabled = isEnabled;
 
         // Visual feedback
         slot.TimeTextBox.Opacity = isEnabled ? 1.0 : 0.5;
         slot.MessageTextBox.Opacity = isEnabled ? 1.0 : 0.5;
         slot.ColorTextBox.Opacity = isEnabled ? 1.0 : 0.5;
+        slot.ColorPickerButton.Opacity = isEnabled ? 1.0 : 0.5;
     }
 
     private void UpdateColorPreview(ReminderSlot slot)
@@ -446,6 +506,7 @@ public partial class RemindersWindow : Window
         public TextBox MessageTextBox { get; set; } = null!;
         public TextBox ColorTextBox { get; set; } = null!;
         public Border ColorPreview { get; set; } = null!;
+        public Button ColorPickerButton { get; set; } = null!;
         public Button TestButton { get; set; } = null!;
         public ReminderDay Day { get; set; }
         public Guid? ReminderId { get; set; }
