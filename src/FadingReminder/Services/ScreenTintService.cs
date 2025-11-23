@@ -26,7 +26,7 @@ public class ScreenTintService
     /// </summary>
     public void ShowTint()
     {
-        ShowTint(null);
+        ShowTint(null, null);
     }
 
     /// <summary>
@@ -35,11 +35,23 @@ public class ScreenTintService
     /// <param name="overrideMessage">Optional message to override the default custom message</param>
     public void ShowTint(string? overrideMessage)
     {
+        ShowTint(overrideMessage, null);
+    }
+
+    /// <summary>
+    /// Shows a tint overlay with an optional override message and color (for reminders)
+    /// </summary>
+    /// <param name="overrideMessage">Optional message to override the default custom message</param>
+    /// <param name="overrideColor">Optional color to override the default tint color (ARGB hex format)</param>
+    public void ShowTint(string? overrideMessage, string? overrideColor)
+    {
         // Get current settings
         var settings = _settingsManager.Settings;
 
-        // Parse the tint color
-        Color tintColor = ColorHelper.FromHex(settings.TintColor);
+        // Parse the tint color - use override if provided, otherwise use settings
+        Color tintColor = !string.IsNullOrEmpty(overrideColor)
+            ? ColorHelper.FromHex(overrideColor)
+            : ColorHelper.FromHex(settings.TintColor);
 
         // Use override message if provided, otherwise use custom message from settings
         string displayMessage = overrideMessage ?? settings.CustomMessage;

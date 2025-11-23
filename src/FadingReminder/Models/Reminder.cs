@@ -40,6 +40,12 @@ public class Reminder
     /// The date this reminder was created (for tracking purposes)
     /// </summary>
     public DateTime CreatedDate { get; set; } = DateTime.Today;
+
+    /// <summary>
+    /// Custom tint color for this reminder in ARGB hex format (e.g., "#80FF0000")
+    /// If null or empty, the global settings color will be used
+    /// </summary>
+    public string? TintColor { get; set; }
 }
 
 /// <summary>

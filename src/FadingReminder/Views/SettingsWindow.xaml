@@ -66,6 +66,7 @@
                             <Button Content="Orange" Width="60" Margin="2" Click="QuickColor_Click" Tag="#80FF8800"/>
                             <Button Content="Purple" Width="60" Margin="2" Click="QuickColor_Click" Tag="#80800080"/>
                             <Button Content="Navy" Width="60" Margin="2" Click="QuickColor_Click" Tag="#80000080"/>
+                            <Button Content="Tea Green" Width="70" Margin="2" Click="QuickColor_Click" Tag="#80CCEED0"/>
                         </WrapPanel>
                     </StackPanel>
                 </GroupBox>

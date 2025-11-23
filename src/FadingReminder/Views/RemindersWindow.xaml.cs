@@ -76,6 +76,7 @@ public partial class RemindersWindow : Window
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) }); // Enable checkbox
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(80) }); // Time
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Message
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90) }); // Color
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) }); // Test button
 
         // Enable checkbox
@@ -115,6 +116,39 @@ public partial class RemindersWindow : Window
         Grid.SetColumn(messageTextBox, 2);
         grid.Children.Add(messageTextBox);
 
+        // Color input with preview
+        var colorPanel = new StackPanel
+        {
+            Orientation = System.Windows.Controls.Orientation.Horizontal,
+            Margin = new Thickness(5, 0, 0, 0),
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        var colorTextBox = new TextBox
+        {
+            Width = 60,
+            VerticalAlignment = VerticalAlignment.Center,
+            MaxLength = 9,
+            ToolTip = "Tint color (hex ARGB)\nLeave empty to use global color"
+        };
+        colorTextBox.TextChanged += (s, e) => UpdateColorPreview(slot);
+        colorPanel.Children.Add(colorTextBox);
+
+        var colorPreview = new Border
+        {
+            Width = 20,
+            Height = 20,
+            BorderBrush = new SolidColorBrush(Color.FromRgb(128, 128, 128)),
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(3),
+            Margin = new Thickness(5, 0, 0, 0),
+            Background = new SolidColorBrush(Colors.LightGray)
+        };
+        colorPanel.Children.Add(colorPreview);
+
+        Grid.SetColumn(colorPanel, 3);
+        grid.Children.Add(colorPanel);
+
         // Test button
         var testButton = new Button
         {
@@ -128,7 +162,7 @@ public partial class RemindersWindow : Window
             ToolTip = "Test this reminder"
         };
         testButton.Click += (s, e) => TestReminder(slot);
-        Grid.SetColumn(testButton, 3);
+        Grid.SetColumn(testButton, 4);
         grid.Children.Add(testButton);
 
         panel.Child = grid;
@@ -137,6 +171,8 @@ public partial class RemindersWindow : Window
         slot.EnableCheckBox = enableCheckBox;
         slot.TimeTextBox = timeTextBox;
         slot.MessageTextBox = messageTextBox;
+        slot.ColorTextBox = colorTextBox;
+        slot.ColorPreview = colorPreview;
         slot.TestButton = testButton;
         slot.Day = day;
 
@@ -150,11 +186,39 @@ public partial class RemindersWindow : Window
         bool isEnabled = slot.EnableCheckBox.IsChecked ?? false;
         slot.TimeTextBox.IsEnabled = isEnabled;
         slot.MessageTextBox.IsEnabled = isEnabled;
+        slot.ColorTextBox.IsEnabled = isEnabled;
         slot.TestButton.IsEnabled = isEnabled;
 
         // Visual feedback
         slot.TimeTextBox.Opacity = isEnabled ? 1.0 : 0.5;
         slot.MessageTextBox.Opacity = isEnabled ? 1.0 : 0.5;
+        slot.ColorTextBox.Opacity = isEnabled ? 1.0 : 0.5;
+    }
+
+    private void UpdateColorPreview(ReminderSlot slot)
+    {
+        if (slot.ColorPreview == null)
+            return;
+
+        try
+        {
+            string colorText = slot.ColorTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(colorText))
+            {
+                // No color specified - show gray to indicate using global color
+                slot.ColorPreview.Background = new SolidColorBrush(Colors.LightGray);
+            }
+            else
+            {
+                Color color = ColorHelper.FromHex(colorText);
+                slot.ColorPreview.Background = new SolidColorBrush(color);
+            }
+        }
+        catch
+        {
+            // Invalid color - show error color
+            slot.ColorPreview.Background = new SolidColorBrush(Colors.Gray);
+        }
     }
 
     private void TimeTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -189,8 +253,10 @@ public partial class RemindersWindow : Window
             slot.EnableCheckBox.IsChecked = reminder.IsEnabled;
             slot.TimeTextBox.Text = DateTimeHelper.FormatTime(reminder.Time);
             slot.MessageTextBox.Text = reminder.Message;
+            slot.ColorTextBox.Text = reminder.TintColor ?? string.Empty;
 
             UpdateSlotState(slot);
+            UpdateColorPreview(slot);
         }
 
         // Load tomorrow's reminders
@@ -204,8 +270,10 @@ public partial class RemindersWindow : Window
             slot.EnableCheckBox.IsChecked = reminder.IsEnabled;
             slot.TimeTextBox.Text = DateTimeHelper.FormatTime(reminder.Time);
             slot.MessageTextBox.Text = reminder.Message;
+            slot.ColorTextBox.Text = reminder.TintColor ?? string.Empty;
 
             UpdateSlotState(slot);
+            UpdateColorPreview(slot);
         }
     }
 
@@ -227,6 +295,10 @@ public partial class RemindersWindow : Window
                 var time = DateTimeHelper.ParseTime(slot.TimeTextBox.Text);
                 if (time.HasValue)
                 {
+                    string? tintColor = string.IsNullOrWhiteSpace(slot.ColorTextBox.Text)
+                        ? null
+                        : slot.ColorTextBox.Text.Trim();
+
                     var reminder = new Reminder
                     {
                         Id = slot.ReminderId ?? Guid.NewGuid(),
@@ -235,7 +307,8 @@ public partial class RemindersWindow : Window
                         Day = ReminderDay.Today,
                         IsEnabled = true,
                         HasTriggered = false,
-                        CreatedDate = DateTime.Today
+                        CreatedDate = DateTime.Today,
+                        TintColor = tintColor
                     };
                     reminders.Add(reminder);
                 }
@@ -256,6 +329,10 @@ public partial class RemindersWindow : Window
                 var time = DateTimeHelper.ParseTime(slot.TimeTextBox.Text);
                 if (time.HasValue)
                 {
+                    string? tintColor = string.IsNullOrWhiteSpace(slot.ColorTextBox.Text)
+                        ? null
+                        : slot.ColorTextBox.Text.Trim();
+
                     var reminder = new Reminder
                     {
                         Id = slot.ReminderId ?? Guid.NewGuid(),
@@ -264,7 +341,8 @@ public partial class RemindersWindow : Window
                         Day = ReminderDay.Tomorrow,
                         IsEnabled = true,
                         HasTriggered = false,
-                        CreatedDate = DateTime.Today
+                        CreatedDate = DateTime.Today,
+                        TintColor = tintColor
                     };
                     reminders.Add(reminder);
                 }
@@ -298,6 +376,21 @@ public partial class RemindersWindow : Window
             return false;
         }
 
+        // Validate color if provided
+        string colorText = slot.ColorTextBox.Text.Trim();
+        if (!string.IsNullOrEmpty(colorText))
+        {
+            try
+            {
+                ColorHelper.FromHex(colorText);
+            }
+            catch
+            {
+                errorMessage = $"Invalid color format: {colorText}. Use ARGB hex format (e.g., #80FF0000).";
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -318,11 +411,16 @@ public partial class RemindersWindow : Window
         var time = DateTimeHelper.ParseTime(slot.TimeTextBox.Text);
         if (time.HasValue)
         {
+            string? tintColor = string.IsNullOrWhiteSpace(slot.ColorTextBox.Text)
+                ? null
+                : slot.ColorTextBox.Text.Trim();
+
             var reminder = new Reminder
             {
                 Time = time.Value,
                 Message = slot.MessageTextBox.Text.Trim(),
-                Day = slot.Day
+                Day = slot.Day,
+                TintColor = tintColor
             };
 
             _reminderService.TestReminder(reminder);
@@ -346,6 +444,8 @@ public partial class RemindersWindow : Window
         public CheckBox EnableCheckBox { get; set; } = null!;
         public TextBox TimeTextBox { get; set; } = null!;
         public TextBox MessageTextBox { get; set; } = null!;
+        public TextBox ColorTextBox { get; set; } = null!;
+        public Border ColorPreview { get; set; } = null!;
         public Button TestButton { get; set; } = null!;
         public ReminderDay Day { get; set; }
         public Guid? ReminderId { get; set; }

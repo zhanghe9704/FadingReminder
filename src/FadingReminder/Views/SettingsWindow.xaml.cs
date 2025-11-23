@@ -120,9 +120,9 @@ public partial class SettingsWindow : Window
         }
 
         // Validate duration
-        if (!int.TryParse(DurationTextBox.Text, out int duration) || duration < 1 || duration > 10)
+        if (!int.TryParse(DurationTextBox.Text, out int duration) || duration < 1 || duration > 1800)
         {
-            errorMessage = "Duration must be between 1 and 10 seconds";
+            errorMessage = "Duration must be between 1 and 1800 seconds";
             return false;
         }
 
