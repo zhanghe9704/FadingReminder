@@ -74,10 +74,10 @@ public partial class RemindersWindow : Window
 
         var grid = new Grid();
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) }); // Enable checkbox
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(80) }); // Time
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(70) }); // Time
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) }); // Message (fixed width)
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(115) }); // Color (expanded to fit button)
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) }); // Test button (narrower)
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(155) }); // Color (expanded to fit button)
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) }); // Test button
 
         // Enable checkbox
         var enableCheckBox = new CheckBox
@@ -110,8 +110,8 @@ public partial class RemindersWindow : Window
         {
             Margin = new Thickness(10, 0, 0, 0),
             VerticalAlignment = VerticalAlignment.Center,
-            MaxLength = 200,
-            ToolTip = "Reminder message (max 200 characters)"
+            MaxLength = 180,
+            ToolTip = "Reminder message (max 180 characters)"
         };
         Grid.SetColumn(messageTextBox, 2);
         grid.Children.Add(messageTextBox);
@@ -121,12 +121,13 @@ public partial class RemindersWindow : Window
         {
             Orientation = System.Windows.Controls.Orientation.Horizontal,
             Margin = new Thickness(5, 0, 0, 0),
-            VerticalAlignment = VerticalAlignment.Center
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Left
         };
 
         var colorTextBox = new TextBox
         {
-            Width = 60,
+            Width = 90,
             VerticalAlignment = VerticalAlignment.Center,
             MaxLength = 9,
             ToolTip = "Tint color (hex ARGB)\nLeave empty to use global color"
@@ -152,7 +153,8 @@ public partial class RemindersWindow : Window
             Content = "▼",
             Width = 20,
             Height = 20,
-            Margin = new Thickness(3, 0, 0, 0),
+            MinWidth = 0, // Override global style
+            Margin = new Thickness(3, 0, 3, 0),
             Padding = new Thickness(0),
             FontSize = 8,
             ToolTip = "Choose from predefined colors",
@@ -207,9 +209,10 @@ public partial class RemindersWindow : Window
         var testButton = new Button
         {
             Content = "Test",
-            Width = 45,
+            Width = 40,
             Height = 25,
-            Margin = new Thickness(15, 0, 0, 0),
+            MinWidth = 0, // Override global style
+            Margin = new Thickness(5, 0, 5, 0),
             Background = new SolidColorBrush(Color.FromRgb(33, 150, 243)),
             Foreground = new SolidColorBrush(Colors.White),
             BorderThickness = new Thickness(0),
