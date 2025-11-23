@@ -209,7 +209,7 @@ public partial class RemindersWindow : Window
             Content = "Test",
             Width = 45,
             Height = 25,
-            Margin = new Thickness(8, 0, 0, 0),
+            Margin = new Thickness(15, 0, 0, 0),
             Background = new SolidColorBrush(Color.FromRgb(33, 150, 243)),
             Foreground = new SolidColorBrush(Colors.White),
             BorderThickness = new Thickness(0),
