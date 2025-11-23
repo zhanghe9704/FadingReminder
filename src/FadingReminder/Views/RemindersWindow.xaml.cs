@@ -75,9 +75,9 @@ public partial class RemindersWindow : Window
         var grid = new Grid();
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) }); // Enable checkbox
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(80) }); // Time
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Message
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) }); // Message (fixed width)
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(115) }); // Color (expanded to fit button)
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) }); // Test button
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) }); // Test button (narrower)
 
         // Enable checkbox
         var enableCheckBox = new CheckBox
@@ -207,16 +207,17 @@ public partial class RemindersWindow : Window
         var testButton = new Button
         {
             Content = "Test",
-            Width = 50,
+            Width = 45,
             Height = 25,
-            Margin = new Thickness(5, 0, 0, 0),
+            Margin = new Thickness(3, 0, 0, 0),
             Background = new SolidColorBrush(Color.FromRgb(33, 150, 243)),
             Foreground = new SolidColorBrush(Colors.White),
             BorderThickness = new Thickness(0),
             ToolTip = "Test this reminder",
             HorizontalContentAlignment = HorizontalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,
-            Padding = new Thickness(2)
+            Padding = new Thickness(1),
+            FontSize = 11
         };
         testButton.Click += (s, e) => TestReminder(slot);
         Grid.SetColumn(testButton, 4);
